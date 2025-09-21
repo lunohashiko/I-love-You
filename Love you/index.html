@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Cho Em 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffe4e1);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9eb5, #ff6b9d);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            transition: all 1s ease;
+        }
+        
+        .loading-screen.fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        .loading-container {
+            text-align: center;
+            position: relative;
+        }
+        
+        .loading-character {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(255, 107, 157, 0.3);
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+        
+        .character-face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-15px);
+            }
+            60% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loading-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+        
+        .loading-bar-container {
+            width: 300px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            margin: 0 auto 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #c44569);
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 1s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(350px); }
+        }
+        
+        .loading-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 20px;
+            animation: floatLoadingHeart 3s infinite ease-in-out;
+        }
+        
+        .loading-heart:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .loading-heart:nth-child(2) {
+            left: 80%;
+            animation-delay: 0.8s;
+        }
+        
+        .loading-heart:nth-child(3) {
+            left: 50%;
+            animation-delay: 1.6s;
+        }
+        
+        @keyframes floatLoadingHeart {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+        
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: dotPulse 1.2s infinite ease-in-out;
+        }
+        
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.15s; }
+        .dot:nth-child(3) { animation-delay: 0.3s; }
+        
+        @keyframes dotPulse {
+            0%, 80%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            40% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Name Input Screen */
+        .name-input-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 8888;
+            background: linear-gradient(135deg, #ff9eb5, #ff6b9d);
+        }
+        
+        .name-input-screen.show {
+            display: flex;
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .name-input-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .name-input-title {
+            color: #ff1493;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .name-input-subtitle {
+            color: #d63384;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .name-input-field {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #ff69b4;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .name-input-field:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
+            transform: scale(1.02);
+        }
+
+        .name-submit-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .name-submit-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-content.show {
+            display: flex;
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            animation: floatUp 4s infinite linear;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .main-gif {
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 30px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            border-radius: 20%;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.4);
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 150px;
+        }
+
+        .main-gif:hover {
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        .success-gif {
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 35px;
+            position: relative;
+            display: none;
+            overflow: hidden;
+            border-radius: 20%;
+            border: 6px solid #ff69b4;
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.6);
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            align-items: center;
+            justify-content: center;
+            font-size: 150px;
+        }
+
+        .success-gif.show {
+            display: flex;
+            animation: successBounce 0.8s ease-out;
+        }
+
+        @keyframes successBounce {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #ff1493;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .message {
+            font-size: 1.3rem;
+            color: #d63384;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #ffc0cb, #ffb6c1);
+            color: #d63384;
+            position: relative;
+        }
+
+        .btn-no:hover {
+            transform: translateX(50px);
+            background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #ffd700;
+            font-size: 20px;
+            animation: sparkle 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0; 
+                transform: scale(0) rotate(0deg);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1) rotate(180deg);
+            }
+        }
+
+        .sparkle1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .sparkle2 { top: 20%; right: 10%; animation-delay: 0.5s; }
+        .sparkle3 { bottom: 20%; left: 15%; animation-delay: 1s; }
+        .sparkle4 { bottom: 10%; right: 20%; animation-delay: 1.5s; }
+
+        .response {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .response.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .response.happy {
+            background: linear-gradient(45deg, #ffe4e1, #ffc0cb);
+            color: #ff1493;
+        }
+
+        .response.sad {
+            background: linear-gradient(45deg, #e6e6fa, #d3d3d3);
+            color: #696969;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .success-modal.show {
+            display: flex;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-modal-content {
+            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
+            border-radius: 30px;
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: modalBounce 0.8s ease-out;
+        }
+
+        @keyframes modalBounce {
+            0% { transform: scale(0) rotate(-10deg); }
+            60% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .success-modal h2 {
+            color: #ff1493;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .success-modal p {
+            color: #d63384;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Love explosion effect */
+        .love-explosion {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .explosion-heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 30px;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2) rotate(360deg) translate(var(--x), var(--y));
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .container, .name-input-container {
+                padding: 40px 25px;
+                margin: 20px;
+            }
+            
+            .title, .name-input-title {
+                font-size: 2rem;
+            }
+            
+            .message, .name-input-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 80%;
+                margin: 5px 0;
+            }
+            
+            .btn-no:hover {
+                transform: translateY(-20px);
+            }
+            
+            .loading-bar-container {
+                width: 280px;
+            }
+
+            .main-gif, .success-gif {
+                width: 250px;
+                height: 250px;
+                font-size: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-heart">💖</div>
+        <div class="loading-heart">💕</div>
+        <div class="loading-heart">💖</div>
+        
+        <div class="loading-container">
+            <div class="loading-character">
+                <div class="character-face">😊</div>
+            </div>
+            
+            <div class="loading-text">Đang chuẩn bị...</div>
+            <div class="loading-subtitle">Một chút thôi nhé! 💕</div>
+            
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Name Input Screen -->
+    <div class="name-input-screen" id="nameInputScreen">
+        <div class="name-input-container">
+            <h1 class="name-input-title">💕 Tỏ tình với ai? 💕</h1>
+            <p class="name-input-subtitle">Nhập tên người bạn muốn tỏ tình:</p>
+            <input type="text" class="name-input-field" id="nameInput" placeholder="Nhập tên ở đây..." maxlength="20">
+            <br>
+            <button class="name-submit-btn" onclick="submitName()">💖 Bắt đầu tỏ tình! 💖</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="heart-bg" id="heartBg"></div>
+
+        <div class="container">
+            <div class="sparkle sparkle1">✨</div>
+            <div class="sparkle sparkle2">⭐</div>
+            <div class="sparkle sparkle3">✨</div>
+            <div class="sparkle sparkle4">⭐</div>
+
+            <div class="main-gif" onclick="animate()">
+                <img src="GIF LOVE.gif" alt="gif-love">
+            </div>
+
+            <div class="success-gif" id="successGif">
+                <img src="GIF IU EM.gif" alt="gif-iu-em">
+            </div>
+
+            <h1 class="title" id="mainTitle">💕 Em ơi! 💕</h1>
+            <p class="message" id="mainMessage">
+                Anh thích em lắm!<br>
+                Em có muốn làm người yêu anh không? 🥺
+            </p>
+
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="sayYes()">
+                    💖 Có! 💖
+                </button>
+                <button class="btn btn-no" onclick="sayNo()" id="noBtn">
+                    😔 Không
+                </button>
+            </div>
+
+            <div class="response" id="response"></div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-modal-content">
+            <h2>🎉 YAY! 🎉</h2>
+            <p id="successMessage">Đã đồng ý rồi!</p>
+        </div>
+    </div>
+
+    <script>
+        let userName = '';
+        let noClickCount = 0;
+
+        // Loading bar progress
+        let progress = 0;
+        const loadingBar = document.getElementById('loadingBar');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            startLoading();
+        });
+
+        function startLoading() {
+            const interval = setInterval(() => {
+                progress += Math.random() * 8 + 3;
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        finishLoading();
+                    }, 800);
+                }
+                
+                loadingBar.style.width = progress + '%';
+            }, 250);
+        }
+
+        function finishLoading() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const nameInputScreen = document.getElementById('nameInputScreen');
+            
+            loadingScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                nameInputScreen.classList.add('show');
+                document.getElementById('nameInput').focus();
+            }, 1000);
+        }
+
+        function submitName() {
+            const nameInput = document.getElementById('nameInput');
+            const name = nameInput.value.trim();
+            
+            if (name === '') {
+                alert('Vui lòng nhập tên! 💕');
+                nameInput.focus();
+                return;
+            }
+            
+            userName = name;
+            
+            const nameInputScreen = document.getElementById('nameInputScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Update content with user's name
+            document.getElementById('mainTitle').textContent = `💕 ${userName} ơi! 💕`;
+            document.getElementById('mainMessage').innerHTML = `
+                Anh thích ${userName} lắm!<br>
+                ${userName} có muốn làm người yêu anh không? 🥺
+            `;
+            
+            nameInputScreen.style.display = 'none';
+            mainContent.classList.add('show');
+            startFloatingHearts();
+        }
+
+        // Allow Enter key to submit name
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitName();
+            }
+        });
+
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = ['💕', '💖', '💗', '💘', '💙', '💜'][Math.floor(Math.random() * 6)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            
+            document.getElementById('heartBg').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        function startFloatingHearts() {
+            setInterval(createFloatingHeart, 500);
+        }
+
+        function sayNo() {
+            noClickCount++;
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.querySelector('.btn-yes');
+            
+            // Enable mouse wheel detection after first "No"
+            if (noClickCount === 1) {
+                document.addEventListener('wheel', handleMouseWheel, { passive: false });
+            }
+            
+            const responses = [
+                `😢 Thật sao ${userName}?`,
+                `🥺 ${userName} nghĩ lại đi...`,
+                `😭 Anh buồn quá ${userName}!`,
+                `💔 Sao ${userName} nỡ từ chối anh?`,
+                `😿 ${userName} ơi, anh sẽ khóc đấy!`,
+                `😱 ${userName} chắc chắn không?`,
+                `🤧 Anh sẽ ốm mất vì ${userName}!`,
+                `😵 ${userName} làm anh choáng váng rồi...`,
+                `🤒 Tim anh đau vì ${userName} quá!`,
+                `😰 ${userName} đừng làm vậy...`,
+                `🥶 ${userName} ơi, anh cần em ấm lòng!`,
+                `🤕 ${userName} làm anh bị thương rồi!`,
+                `😪 ${userName} làm anh mệt lắm...`,
+                `🤐 ${userName} khiến anh không biết nói gì...`,
+                `🙄 ${userName} nghĩ kỹ chưa?`,
+                `😤 Tại sao vậy ${userName}?`,
+                `😫 ${userName} làm anh stress quá!`,
+                `🤯 ${userName} làm đầu anh nổ tung!`,
+                `🥴 ${userName} làm anh chóng mặt...`,
+                `😵‍💫 ${userName} làm anh hoa mắt...`
+            ];
+            
+            const buttonTexts = [
+                "😥 Không mà", "😰 Thật không", "😭 Không nhé", "😿 Xin lỗi", "💔 Bye",
+                "🚫 Không!", "❌ No way!", "😤 Từ chối!", "🙅‍♀️ Không đâu", "⛔ Stop!",
+                "🚪 Ra về!", "🏃‍♀️ Chạy!", "🤷‍♀️ Thôi", "😑 Nghĩ tiếp", "🤔 Hmm...",
+                "😐 Maybe not", "🤫 Shh no", "🤭 Hehe no", "😈 Evil no", "👿 Bad no"
+            ];
+            
+            const responseIndex = (noClickCount - 1) % responses.length;
+            const buttonIndex = (noClickCount - 1) % buttonTexts.length;
+            
+            showResponse(responses[responseIndex], 'sad');
+            
+            // Make "No" button smaller and "Yes" button bigger
+            if (noClickCount > 5) {
+                const shrinkFactor = Math.max(0.3, 1 - (noClickCount - 5) * 0.05);
+                noBtn.style.fontSize = (1.1 * shrinkFactor) + 'rem';
+                noBtn.style.padding = `${15 * shrinkFactor}px ${30 * shrinkFactor}px`;
+            }
+            
+            if (noClickCount > 3) {
+                const growFactor = Math.min(2, 1 + (noClickCount - 3) * 0.1);
+                yesBtn.style.fontSize = (1.1 * growFactor) + 'rem';
+                yesBtn.style.padding = `${15 * growFactor}px ${30 * growFactor}px`;
+                yesBtn.style.transform = `scale(${growFactor})`;
+                yesBtn.style.animation = `pulse ${Math.max(0.5, 2 - noClickCount * 0.1)}s infinite`;
+            }
+            
+            // Make button move randomly
+            const intensity = Math.min(noClickCount * 30, 300);
+            const randomX = (Math.random() - 0.5) * intensity;
+            const randomY = (Math.random() - 0.5) * intensity;
+            const rotation = Math.random() * 360 - 180;
+            const scale = 0.8 + Math.random() * 0.4;
+            
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${rotation}deg) scale(${scale})`;
+            noBtn.style.transition = `all ${0.3 + Math.random() * 0.5}s ease-out`;
+            noBtn.textContent = buttonTexts[buttonIndex];
+            
+            // Special milestone celebrations
+            if ([10, 25, 50].includes(noClickCount)) {
+                createMilestoneEffect(noClickCount);
+            }
+        }
+
+        // Mouse wheel detection for "Yes" button growth
+        function handleMouseWheel(e) {
+            if (noClickCount > 0) {
+                const yesBtn = document.querySelector('.btn-yes');
+                const noBtn = document.getElementById('noBtn');
+                
+                if (yesBtn && noBtn) {
+                    const currentTransform = yesBtn.style.transform || '';
+                    const currentScale = parseFloat(currentTransform.match(/scale\(([^)]+)\)/)?.[1] || 1);
+                    const newScale = Math.min(currentScale + 0.2, 4);
+                    
+                    yesBtn.style.transform = `scale(${newScale})`;
+                    yesBtn.style.fontSize = (1.1 * newScale) + 'rem';
+                    yesBtn.style.padding = `${15 * newScale}px ${30 * newScale}px`;
+                    yesBtn.style.zIndex = '1000';
+                    yesBtn.style.boxShadow = `0 0 ${30 * newScale}px rgba(255, 20, 147, 0.8)`;
+                    
+                    const noScale = Math.max(0.1, 1 - newScale * 0.2);
+                    noBtn.style.transform = `scale(${noScale}) translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
+                    
+                    e.preventDefault();
+                }
+            }
+        }
+
+        function sayYes() {
+            const yesBtn = document.querySelector('.btn-yes');
+            const mainGif = document.querySelector('.main-gif');
+            const successGif = document.getElementById('successGif');
+            const successModal = document.getElementById('successModal');
+            const successMessage = document.getElementById('successMessage');
+            
+            yesBtn.textContent = "💕 YAY! 💕";
+            
+            // Hide main GIF and show success GIF
+            mainGif.style.display = 'none';
+            successGif.classList.add('show');
+            
+            // Create love explosion
+            createLoveExplosion();
+            
+            showResponse(`🎉 HOORAY! ${userName} đồng ý rồi! Anh yêu ${userName} lắm! 💕💕💕`, 'happy');
+            
+            // Hide the no button completely
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.display = 'none';
+            
+            // Show success modal with personalized message
+            successMessage.innerHTML = `
+                🎊 ${userName} đã đồng ý! 🎊<br>
+                💖 Chúc mừng cả hai! 💖<br>
+                🌈 Hạnh phúc mãi mãi! 🌈
+            `;
+            
+            setTimeout(() => {
+                successModal.classList.add('show');
+            }, 1000);
+            
+            // Add celebration
+            setTimeout(() => {
+                confetti();
+            }, 500);
+            
+            // Change title
+            setTimeout(() => {
+                document.querySelector('#mainTitle').textContent = `💖 ${userName.toUpperCase()} ĐỒNG Ý RỒI! 💖`;
+                document.querySelector('#mainMessage').innerHTML = `Cảm ơn ${userName}! Anh hạnh phúc lắm! 🥰`;
+            }, 1500);
+            
+            // Remove event listeners
+            document.removeEventListener('wheel', handleMouseWheel);
+        }
+
+        function showResponse(text, type) {
+            const response = document.getElementById('response');
+            response.textContent = text;
+            response.className = `response show ${type}`;
+        }
+
+        function animate() {
+            const character = document.querySelector('.main-gif');
+            if (character) {
+                character.style.animation = 'none';
+                setTimeout(() => {
+                    character.style.animation = 'bounce 0.5s ease-in-out';
+                }, 10);
+            }
+        }
+
+        function createLoveExplosion() {
+            const explosion = document.createElement('div');
+            explosion.className = 'love-explosion';
+            explosion.style.left = '50%';
+            explosion.style.top = '50%';
+            
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'explosion-heart';
+                heart.textContent = '💖';
+                
+                const angle = (i * 30) * Math.PI / 180;
+                const distance = 100;
+                heart.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+                heart.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+                
+                explosion.appendChild(heart);
+            }
+            
+            document.body.appendChild(explosion);
+            
+            setTimeout(() => {
+                explosion.remove();
+            }, 1000);
+        }
+
+        function confetti() {
+            const colors = ['💖', '💕', '💗', '💘', '🌹', '🎉', '✨', '⭐'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confettiPiece = document.createElement('div');
+                    confettiPiece.textContent = colors[Math.floor(Math.random() * colors.length)];
+                    confettiPiece.style.position = 'fixed';
+                    confettiPiece.style.left = Math.random() * 100 + 'vw';
+                    confettiPiece.style.top = '-50px';
+                    confettiPiece.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    confettiPiece.style.pointerEvents = 'none';
+                    confettiPiece.style.zIndex = '1000';
+                    confettiPiece.style.animation = 'floatUp 3s ease-out forwards';
+                    
+                    document.body.appendChild(confettiPiece);
+                    
+                    setTimeout(() => {
+                        confettiPiece.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        function createMilestoneEffect(count) {
+            const messages = {
+                10: `🎉 10 lần rồi ${userName}! Anh vẫn ở đây!`,
+                25: `🔥 25 lần! ${userName} kiên trì thật!`,
+                50: `🏆 50 lần! ${userName} là CHAMPION từ chối!`
+            };
+            
+            if (messages[count]) {
+                showResponse(messages[count], 'happy');
+                
+                // Create fireworks effect
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const firework = document.createElement('div');
+                        firework.textContent = ['🎆', '✨', '🎊', '🎉'][Math.floor(Math.random() * 4)];
+                        firework.style.position = 'fixed';
+                        firework.style.left = Math.random() * 100 + 'vw';
+                        firework.style.top = Math.random() * 100 + 'vh';
+                        firework.style.fontSize = '30px';
+                        firework.style.pointerEvents = 'none';
+                        firework.style.zIndex = '1000';
+                        firework.style.animation = 'explode 2s ease-out forwards';
+                        
+                        document.body.appendChild(firework);
+                        
+                        setTimeout(() => {
+                            firework.remove();
+                        }, 2000);
+                    }, i * 100);
+                }
+            }
+        }
+
+        // Add some random character animations
+        setInterval(() => {
+            if (Math.random() < 0.3) {
+                animate();
+            }
+        }, 3000);
+
+        // Click outside modal to close
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
